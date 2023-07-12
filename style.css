@@ -51,20 +51,14 @@ body {
     border: 5px solid rgba(113, 249, 113, 0.941);
     background-color: rgba(113, 249, 113, 0.941);
 }
-
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
 .btn {
     width: 150px;
     height: 150px;
     border: none;
-}
-.btn:active {
-    background-color: blue;
-}
-
-/* .blue {
-    background-color: blue;
-} */
-
-.red {
-    background-color: red;
+    border: 1px solid black;
+        font-size: 20px;
 }

@@ -6,9 +6,8 @@ body {
 
 .container {
     position: absolute;
-    top: 33%;
-    left: 40%;
-    background-color: rgba(113, 249, 113, 0.941);
+    top: 30%;
+        left: 35%;
 }
 
 .input-card {
@@ -17,6 +16,7 @@ body {
     flex-direction: column;
     gap: 20px;
     align-items: center;
+    background-color: rgba(113, 249, 113, 0.941);
 }
 
 .player-input {
@@ -39,4 +39,21 @@ body {
     margin-top: 30px;
     width: 100%;
     text-align: center;
+}
+.player-sccore {
+    display: flex;
+    justify-content: space-between;
+    padding: 70px;
+    font-size: 50px;
+}
+
+.game-card {
+    border: 5px solid rgba(113, 249, 113, 0.941);
+    background-color: rgba(113, 249, 113, 0.941);
+}
+
+.btn {
+    width: 150px;
+    height: 150px;
+    border: none;
 }

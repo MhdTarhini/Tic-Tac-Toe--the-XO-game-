@@ -57,3 +57,14 @@ body {
     height: 150px;
     border: none;
 }
+.btn:active {
+    background-color: blue;
+}
+
+/* .blue {
+    background-color: blue;
+} */
+
+.red {
+    background-color: red;
+}

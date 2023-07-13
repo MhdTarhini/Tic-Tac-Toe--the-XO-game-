@@ -1,13 +1,11 @@
 body {
-    width: 100%;
-    height: 100%;
-    background-color: #fcfcfc;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .container {
     position: absolute;
     top: 30%;
-        left: 35%;
+    left: 35%;
 }
 
 .input-card {
@@ -67,7 +65,8 @@ body {
 }
 
 .winner {
-    background-color: rgb(96, 165, 96);
+    color: rgb(98, 174, 98);
+        height: fit-content;
 }
 
 .stop {
@@ -81,4 +80,21 @@ body {
     left: 45%;
     width: 200px;
     height: 100px;
+}
+.animation {
+    animation: background-color-change 2s infinite;
+}
+
+@keyframes background-color-change {
+    0% {
+        background-color: red;
+    }
+
+    50% {
+        background-color: green;
+    }
+
+    100% {
+        background-color: blue;
+    }
 }

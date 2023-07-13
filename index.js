@@ -1,6 +1,7 @@
 let start = document.querySelector(".start-game");
 
-start.addEventListener("click", function () {
+start.addEventListener("click", startGame)
+function startGame () {
   let landing_page = document.querySelector(".container");
   landing_page.classList.add("display-none");
   let game_page_player = document.querySelector(".player-sccore");
@@ -11,7 +12,7 @@ start.addEventListener("click", function () {
   var player_2 = document.querySelector("#player-2").value;
   document.querySelector(".player-1-name").innerHTML = player_1;
   document.querySelector(".player-2-name").innerHTML = player_2;
-});
+};
 
 let game_card = document.querySelector(".game-card");
 let game_squares = document.getElementsByClassName("btn");
@@ -20,12 +21,14 @@ let counter = 1;
 for (let i = 0; i <= 8; i++) {
     game_squares[i].addEventListener("click", function () {
         counter += 1;
-        if (counter % 2 === 0) {
-            game_squares[i].innerHTML = "X";
-        } else {
-            game_squares[i].innerHTML = "O";
+        if(game_squares[i].innerHTML===""){
+            if (counter % 2 === 0) {
+                game_squares[i].innerHTML = "X";
+            } else {
+                game_squares[i].innerHTML = "O";
+            }
+            check_winner();
         }
-        check_winner();
     });
 }
 
@@ -34,7 +37,7 @@ function check_draw(done) {
   check_Status += 1;
   if (check_Status === 9) {
     check_Status = 0;
-    winning_counter("draw");
+    winning_counter(undefined,"draw");
   }else if (done){
     check_Status=0
   }
@@ -49,7 +52,7 @@ function check_winner() {
       for (let j = 1; j <= 3; j++) {
         let square_row = document.querySelector(`.col-${j}.row-${checker_row}`);
         if (square_row.innerHTML !== "") {
-          winning_counter(square_row.textContent);
+          winning_counter(square_row);
         }
       }
       winning_counter("NO WiNNER");
@@ -67,7 +70,7 @@ function check_winner() {
       for (let j = 1; j <= 3; j++) {
         let square_row = document.querySelector(`.col-${j}.row-${j}`);
         if (square_row.innerHTML !== "") {
-          winning_counter(square_row.textContent);
+          winning_counter(square_row);
         }
       }
       winning_counter("NO WiNNER");
@@ -75,7 +78,7 @@ function check_winner() {
       for (let j = 1; j <= 3; j++) {
         let square_row = document.querySelector(`.col-${checker_diag}.row-${j}`);
         if (square_row.innerHTML !== "") {
-          winning_counter(square_row.textContent);
+          winning_counter(square_row);
         }
         checker_diag -= 1;
     }
@@ -86,56 +89,75 @@ function check_winner() {
 
 let winning_counter_X = 0;
 let winning_counter_O = 0;
-function winning_counter(square) {
-  if (square === "X") {
+let array = []
+function winning_counter(square,string) {
+  if (square!==undefined && square.textContent === "X") {
     winning_counter_X += 1;
-  } else if (square === "O") {
+    array.push(square);
+  } else if ((square !== undefined && square.textContent) === "O") {
     winning_counter_O += 1;
-  } else if (square === "draw") {
+    array.push(square);
+  } else if (string === "draw") {
     the_winner("draw");
     check_draw(true);
   } else {
     winning_counter_X = 0;
     winning_counter_O = 0;
+    array.splice(0, array.length)
   }
   if (winning_counter_X === 3) {
-    the_winner("X");
+    the_winner("X", array);
     check_draw(true)
   } else if (winning_counter_O === 3) {
-    the_winner("O");
+    the_winner("O", array);
     check_draw(true);
 
   }
 }
 
-function the_winner(result) {
+function the_winner(result, array) {
   let winner_display = document.querySelector(".winner");
   winner_display.classList.remove("display-none");
   if (result === "X") {
-    winner_display.innerHTML =
-      document.querySelector(".player-1-name").innerHTML;
+    winner_display.innerHTML = `${
+      document.querySelector(".player-1-name").innerHTML
+    } is the winner`;
     let sccore =
-      parseInt(document.querySelector(".player-1-sccore").innerHTML) + 1;
+      parseInt(document.querySelector(".player-1-sccore").textContent) + 1;
     document.querySelector(".player-1-sccore").innerHTML = sccore;
   } else if (result === "O") {
-    winner_display.innerHTML =
-      document.querySelector(".player-2-name").innerHTML;
+    winner_display.innerHTML = `${
+      document.querySelector(".player-2-name").innerHTML
+    } is the winner`;
     let sccore =
-      parseInt(document.querySelector(".player-2-sccore").innerHTML) + 1;
+      parseInt(document.querySelector(".player-2-sccore").textContent) + 1;
     document.querySelector(".player-2-sccore").innerHTML = sccore;
   } else {
     winner_display.innerHTML = "Draw";
+  }
+  if(winner_display.innerHTML!=="Draw"){
+    for(let i=0 ; i<=2 ;i++){
+        array[i].classList.add("animation");
+    }
   }
   let game_container = document.querySelector(".game");
   game_container.classList.add("stop");
   let new_game = document.querySelector(".new-game");
   new_game.classList.remove("display-none");
-
 }
 
 let new_game = document.querySelector(".new-game");
-  winning_counter("RESTART")
-new_game.addEventListener("click", function () {
+new_game.addEventListener("click", startNewGame)
+
+function startNewGame() {
+  let winner_display = document.querySelector(".winner");
+  if(winner_display.innerHTML!=="Draw"){
+      let square_animation=document.querySelectorAll(".animation")
+          for(i=0;i<=2;i++){
+              square_animation[i].classList.remove("animation")
+          }
+  }
+  winning_counter("RESTART");
   for (let i = 0; i <= 8; i++) {
     game_squares[i].innerHTML = "";
   }
@@ -143,32 +165,5 @@ new_game.addEventListener("click", function () {
   game_container.classList.remove("stop");
   let new_game = document.querySelector(".new-game");
   new_game.classList.add("display-none");
-  let winner_display = document.querySelector(".winner");
   winner_display.classList.add("display-none");
-});
-
-// document.querySelector(".col-1.row-1").addEventListener("click", isClicked);
-// document.querySelector(".col-2.row-1").addEventListener("click", isClicked);
-// document.querySelector(".col-3.row-1").addEventListener("click", isClicked);
-// document.querySelector(".col-1.row-2").addEventListener("click", isClicked);
-// document.querySelector(".col-2.row-2").addEventListener("click", isClicked);
-// document.querySelector(".col-3.row-2").addEventListener("click", isClicked);
-// document.querySelector(".col-1.row-3").addEventListener("click", isClicked);
-// document.querySelector(".col-2.row-3").addEventListener("click", isClicked);
-// document.querySelector(".col-3.row-3").addEventListener("click", isClicked);
-
-// let counter = 1;
-// let check_Status = 0;
-// function isClicked(e) {
-//   counter += 1;
-//   if (counter % 2 === 0) {
-//     e.target.innerHTML = "X";
-//   } else {
-//     e.target.innerHTML = "O";
-//   }
-//   check_Status += 1;
-//   if (check_Status === 9) {
-//     winning_counter("draw");
-//   }
-//   check_winner();
-// }
+};

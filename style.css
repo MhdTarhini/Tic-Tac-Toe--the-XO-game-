@@ -62,3 +62,23 @@ body {
     border: 1px solid black;
         font-size: 20px;
 }
+.display-none {
+    display: none
+}
+
+.winner {
+    background-color: rgb(96, 165, 96);
+}
+
+.stop {
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+.new-game {
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    width: 200px;
+    height: 100px;
+}

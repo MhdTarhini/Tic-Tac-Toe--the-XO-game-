@@ -27,6 +27,9 @@ for (let i = 0; i <= 8; i++) {
       game_squares[i].innerHTML = "O";
     }
     check_Status += 1;
+    if (check_Status === 9) {
+      winning_counter("draw");
+    }
     check_winner();
   });
 }
@@ -83,6 +86,8 @@ function winning_counter(square) {
     winning_counter_X += 1;
   } else if (square === "O") {
     winning_counter_O += 1;
+  } else if (square === "draw") {
+    the_winner("draw");
   } else {
     winning_counter_X = 0;
     winning_counter_O = 0;
@@ -100,9 +105,26 @@ function the_winner(result, sccore) {
     winner_display.innerHTML =
       document.querySelector(".player-1-name").innerHTML;
     document.querySelector(".player-1-sccore").innerHTML += 1;
-  } else {
+  } else if (result === "Y") {
     winner_display.innerHTML =
       document.querySelector(".player-2-name").innerHTML;
     document.querySelector(".player-2-sccore").innerHTML += 1;
+  } else {
+    winner_display.innerHTML = "Draw";
   }
+  let game_container = document.querySelector(".game");
+  game_container.classList.add("stop");
+  let new_game = document.querySelector(".new-game");
+  new_game.classList.remove("display-none");
 }
+
+let new_game = document.querySelector(".new-game");
+new_game.addEventListener("click", function () {
+  for (let i = 0; i <= 8; i++) {
+    game_squares[i].innerHTML = "";
+  }
+  let game_container = document.querySelector(".game");
+  game_container.classList.remove("stop");
+  let new_game = document.querySelector(".new-game");
+  new_game.classList.add("display-none");
+});

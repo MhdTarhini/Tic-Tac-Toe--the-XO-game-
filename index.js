@@ -17,46 +17,52 @@ let game_card = document.querySelector(".game-card");
 let game_squares = document.getElementsByClassName("btn");
 
 let counter = 1;
-let check_Status = 0;
 for (let i = 0; i <= 8; i++) {
-  game_squares[i].addEventListener("click", function () {
-    counter += 1;
-    if (counter % 2 === 0) {
-      game_squares[i].innerHTML = "X";
-    } else {
-      game_squares[i].innerHTML = "O";
-    }
-    check_Status += 1;
-    if (check_Status === 9) {
-      winning_counter("draw");
-    }
-    check_winner();
-  });
+    game_squares[i].addEventListener("click", function () {
+        counter += 1;
+        if (counter % 2 === 0) {
+            game_squares[i].innerHTML = "X";
+        } else {
+            game_squares[i].innerHTML = "O";
+        }
+        check_winner();
+    });
 }
 
+var check_Status = 0;
+function check_draw(done) {
+  check_Status += 1;
+  if (check_Status === 9) {
+    check_Status = 0;
+    winning_counter("draw");
+  }else if (done){
+    check_Status=0
+  }
+}
 function check_winner() {
-  console.log("check");
-  for (let i = 0; i <= 8; i++) {
-    let checker = 1;
+    check_draw();
+  let checker_row = 1;
+  let checker_col = 1;
+  let checker_diag= 3;
+  for (let i = 0; i <8; i++) {
     if (i <= 2) {
       for (let j = 1; j <= 3; j++) {
-        let square_row = document.querySelector(`.col-${j}.row-${checker}`);
+        let square_row = document.querySelector(`.col-${j}.row-${checker_row}`);
         if (square_row.innerHTML !== "") {
           winning_counter(square_row.textContent);
         }
       }
       winning_counter("NO WiNNER");
-      checker += 1;
+      checker_row += 1;
     } else if (i <= 5 && i > 2) {
-      checker = 1;
       for (let j = 1; j <= 3; j++) {
-        let square_row = document.querySelector(`.col-${checker}.row-${j}`);
+        let square_row = document.querySelector(`.col-${checker_col}.row-${j}`);
         if (square_row.textContent !== "") {
           winning_counter(square_row.textContent);
         }
       }
       winning_counter("NO WiNNER");
-      checker += 1;
+      checker_col += 1;
     } else if (i === 6) {
       for (let j = 1; j <= 3; j++) {
         let square_row = document.querySelector(`.col-${j}.row-${j}`);
@@ -66,14 +72,13 @@ function check_winner() {
       }
       winning_counter("NO WiNNER");
     } else {
-      checker = 3;
       for (let j = 1; j <= 3; j++) {
-        let square_row = document.querySelector(`.col-${checker}.row-${j}`);
+        let square_row = document.querySelector(`.col-${checker_diag}.row-${j}`);
         if (square_row.innerHTML !== "") {
           winning_counter(square_row.textContent);
         }
-        checker -= 1;
-      }
+        checker_diag -= 1;
+    }
       winning_counter("NO WiNNER");
     }
   }
@@ -88,27 +93,36 @@ function winning_counter(square) {
     winning_counter_O += 1;
   } else if (square === "draw") {
     the_winner("draw");
+    check_draw(true);
   } else {
     winning_counter_X = 0;
     winning_counter_O = 0;
   }
   if (winning_counter_X === 3) {
     the_winner("X");
+    check_draw(true)
   } else if (winning_counter_O === 3) {
-    the_winner("Y");
+    the_winner("O");
+    check_draw(true);
+
   }
 }
 
-function the_winner(result, sccore) {
+function the_winner(result) {
   let winner_display = document.querySelector(".winner");
+  winner_display.classList.remove("display-none");
   if (result === "X") {
     winner_display.innerHTML =
       document.querySelector(".player-1-name").innerHTML;
-    document.querySelector(".player-1-sccore").innerHTML += 1;
-  } else if (result === "Y") {
+    let sccore =
+      parseInt(document.querySelector(".player-1-sccore").innerHTML) + 1;
+    document.querySelector(".player-1-sccore").innerHTML = sccore;
+  } else if (result === "O") {
     winner_display.innerHTML =
       document.querySelector(".player-2-name").innerHTML;
-    document.querySelector(".player-2-sccore").innerHTML += 1;
+    let sccore =
+      parseInt(document.querySelector(".player-2-sccore").innerHTML) + 1;
+    document.querySelector(".player-2-sccore").innerHTML = sccore;
   } else {
     winner_display.innerHTML = "Draw";
   }
@@ -116,9 +130,11 @@ function the_winner(result, sccore) {
   game_container.classList.add("stop");
   let new_game = document.querySelector(".new-game");
   new_game.classList.remove("display-none");
+
 }
 
 let new_game = document.querySelector(".new-game");
+  winning_counter("RESTART")
 new_game.addEventListener("click", function () {
   for (let i = 0; i <= 8; i++) {
     game_squares[i].innerHTML = "";
@@ -127,4 +143,32 @@ new_game.addEventListener("click", function () {
   game_container.classList.remove("stop");
   let new_game = document.querySelector(".new-game");
   new_game.classList.add("display-none");
+  let winner_display = document.querySelector(".winner");
+  winner_display.classList.add("display-none");
 });
+
+// document.querySelector(".col-1.row-1").addEventListener("click", isClicked);
+// document.querySelector(".col-2.row-1").addEventListener("click", isClicked);
+// document.querySelector(".col-3.row-1").addEventListener("click", isClicked);
+// document.querySelector(".col-1.row-2").addEventListener("click", isClicked);
+// document.querySelector(".col-2.row-2").addEventListener("click", isClicked);
+// document.querySelector(".col-3.row-2").addEventListener("click", isClicked);
+// document.querySelector(".col-1.row-3").addEventListener("click", isClicked);
+// document.querySelector(".col-2.row-3").addEventListener("click", isClicked);
+// document.querySelector(".col-3.row-3").addEventListener("click", isClicked);
+
+// let counter = 1;
+// let check_Status = 0;
+// function isClicked(e) {
+//   counter += 1;
+//   if (counter % 2 === 0) {
+//     e.target.innerHTML = "X";
+//   } else {
+//     e.target.innerHTML = "O";
+//   }
+//   check_Status += 1;
+//   if (check_Status === 9) {
+//     winning_counter("draw");
+//   }
+//   check_winner();
+// }
